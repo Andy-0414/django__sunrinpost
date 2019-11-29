@@ -8,6 +8,9 @@ class Group(models.Model):
     owner = models.ForeignKey(
         'auth.User', on_delete=models.CASCADE, related_name="group")
 
+    def __str__(self):
+        return self.name
+
 
 class Post(models.Model):
     title = models.CharField(max_length=24)  # 제목
@@ -22,6 +25,9 @@ class Post(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.title
+
 
 class Comment(models.Model):
     content = models.TextField()  # 내용
@@ -31,3 +37,6 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)  # 소속 포스트
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.owner
