@@ -26,7 +26,7 @@ class PostSerializer(serializers.ModelSerializer):
             'recommend',
             'owner',
             'group',
-            'pk'
+            'pk',
             'created_at',
         )
         read_only_fields = ('created_at',)
@@ -41,7 +41,7 @@ class CommentSerializer(serializers.ModelSerializer):
             'content',
             'owner',
             'post',
-            'pk'
+            'pk',
             'created_at',
         )
         read_only_fields = ('created_at',)
