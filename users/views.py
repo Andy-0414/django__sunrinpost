@@ -9,9 +9,10 @@ import json
 
 @csrf_exempt
 def login(request):
-    if request.POST:
-        username = request.POST['username']
-        password = request.POST['password']
+    json_data = json.loads(request.body.decode("utf-8"))
+    if request.POST or json_data:
+        username = request.POST.get('username') or json_data.get('username')
+        password = request.POST.get('password') or json_data.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)

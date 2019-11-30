@@ -3,7 +3,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from .views import PostView, GroupView, CommentView
 
 group_list = GroupView.as_view({
-    'get': 'list'
+    'get': 'list',
+    'post': 'create',
 })
 group_detail = GroupView.as_view({
     'get': 'retrieve',
@@ -13,7 +14,9 @@ group_detail = GroupView.as_view({
 })
 
 post_list = PostView.as_view({
-    'get': 'list'
+    'get': 'list',
+    'post': 'create',
+
 })
 post_detail = PostView.as_view({
     'get': 'retrieve',
@@ -24,6 +27,7 @@ post_detail = PostView.as_view({
 
 comment_list = CommentView.as_view({
     'get': 'list',
+    'post': 'create',
 })
 comment_detail = CommentView.as_view({
     'get': 'list',
@@ -35,10 +39,11 @@ comment_detail = CommentView.as_view({
 
 urlpatterns = format_suffix_patterns([
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
-    
+
     path('group/', group_list, name='group_list'),
     path('group/<int:pk>/', group_detail, name='group_detail'),
 
+    path('posts/', post_list, name='post_list'),
     path('posts/<int:group>/', post_list, name='post_list'),
     path('posts/<int:group>/<int:pk>/', post_detail, name='post_detail'),
 
