@@ -4,7 +4,9 @@ from rest_framework import viewsets, permissions
 from .serializers import GroupSerializer, PostSerializer, CommentSerializer
 from .models import Group, Post, Comment
 
+from rest_framework.decorators import action
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.response import Response
 
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -31,6 +33,13 @@ class GroupView(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+    def retrieve(self, request, pk=None):
+        group = Group.objects.get(pk=pk)
+        group.visit += 1
+        group.save()
+        serializer = GroupSerializer(group)
+        return Response(serializer.data)
+
 
 class PostView(viewsets.ModelViewSet):
     authentication_classes = (
@@ -50,6 +59,22 @@ class PostView(viewsets.ModelViewSet):
             return Post.objects.select_related('group').filter(group__pk=group)
         else:
             return Post.objects.all()
+
+    def retrieve(self, request, pk=None, group=None):
+        post = Post.objects.get(pk=pk)
+        post.visit += 1
+        post.save()
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def add_recommend(self, request, pk=None, group=None):
+        print("TEST")
+        post = Post.objects.get(pk=pk)
+        post.recommend += 1
+        post.save()
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
 
 
 class CommentView(viewsets.ModelViewSet):

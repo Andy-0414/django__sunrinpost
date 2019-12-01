@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login as auth_login
+from django.contrib.auth.models import User
 from django.core import serializers
 import json
 
@@ -31,9 +32,12 @@ def v_logout(request):
 
 @csrf_exempt
 def register(request):
-    user = User.objects.create_user(
-        request.POST['username'], request.POST['email'], request.POST['password'])
-    return HttpResponse(json.dumps({"result": True}), content_type="application/json")
+    json_data = json.loads(request.body.decode("utf-8"))
+    if request.POST or json_data:
+        username = request.POST.get('username') or json_data.get('username')
+        password = request.POST.get('password') or json_data.get('password')
+        user = User.objects.create_user(username=username,password=password)
+        return HttpResponse(json.dumps({"result": True}), content_type="application/json")
 
 
 @csrf_exempt

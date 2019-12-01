@@ -20,6 +20,7 @@ post_list = PostView.as_view({
 })
 post_detail = PostView.as_view({
     'get': 'retrieve',
+    'post': 'add_recommend',
     'put': 'update',
     'patch': 'partial_update',
     'delete': 'destroy'
@@ -47,8 +48,8 @@ urlpatterns = format_suffix_patterns([
     path('posts/<int:group>/', post_list, name='post_list2'),
     path('posts/<int:group>/<int:pk>/', post_detail, name='post_detail'),
 
-    path('posts/<int:post>/comment',
+    path('posts/<int:post>/comment/',
          comment_list, name='comment_list'),
-    path('posts/<int:post>/comment/<int:pk>',
+    path('posts/<int:post>/comment/<int:pk>/',
          comment_detail, name='comment_detail'),
 ])
