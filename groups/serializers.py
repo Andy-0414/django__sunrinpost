@@ -2,6 +2,7 @@
 from rest_framework import serializers, permissions
 from .models import Group, Post, Comment
 
+
 class GroupSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
 
@@ -13,6 +14,7 @@ class GroupSerializer(serializers.ModelSerializer):
             'owner',
             'pk'
         )
+
 
 class PostSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')

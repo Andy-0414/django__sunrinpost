@@ -30,7 +30,7 @@ comment_list = CommentView.as_view({
     'post': 'create',
 })
 comment_detail = CommentView.as_view({
-    'get': 'list',
+    'get': 'retrieve',
     'put': 'update',
     'patch': 'partial_update',
     'delete': 'destroy'
@@ -43,12 +43,12 @@ urlpatterns = format_suffix_patterns([
     path('group/', group_list, name='group_list'),
     path('group/<int:pk>/', group_detail, name='group_detail'),
 
-    path('posts/', post_list, name='post_list'),
-    path('posts/<int:group>/', post_list, name='post_list'),
+    path('posts/', post_list, name='post_list1'),
+    path('posts/<int:group>/', post_list, name='post_list2'),
     path('posts/<int:group>/<int:pk>/', post_detail, name='post_detail'),
 
-    path('posts/<int:group>/<int:post>/comment',
+    path('posts/<int:post>/comment',
          comment_list, name='comment_list'),
-    path('posts/<int:group>/<int:post>/comment/<int:pk>',
+    path('posts/<int:post>/comment/<int:pk>',
          comment_detail, name='comment_detail'),
 ])

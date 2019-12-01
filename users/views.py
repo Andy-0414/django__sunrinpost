@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
-from django.contrib.auth import logout as auth_logout;
+from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login as auth_login
 from django.core import serializers
 import json

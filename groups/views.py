@@ -40,12 +40,14 @@ class PostView(viewsets.ModelViewSet):
         permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        group = Group.objects.get(pk=self.kwargs.get('group'))
+        serializer.save(owner=self.request.user,
+                        group=group)
 
     def get_queryset(self):
         group = self.kwargs.get('group')
         if group:
-            return Post.objects.select_related().filter(pk=group)
+            return Post.objects.select_related('group').filter(group__pk=group)
         else:
             return Post.objects.all()
 
@@ -62,8 +64,8 @@ class CommentView(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
     def get_queryset(self):
-        group = self.kwargs.get('group')
-        if group:
-            return Comment.objects.select_related().filter(pk=group)
+        post = self.kwargs.get('post')
+        if post:
+            return Comment.objects.select_related('post').filter(post__pk=post)
         else:
             return Comment.objects.all()
